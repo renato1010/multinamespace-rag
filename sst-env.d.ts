@@ -3,9 +3,13 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
-    MyWeb: {
+    MultiNamespaceRag: {
       type: "sst.aws.Nextjs"
       url: string
+    }
+    NamespaceDocs: {
+      name: string
+      type: "sst.aws.Bucket"
     }
   }
 }
