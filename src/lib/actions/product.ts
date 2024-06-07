@@ -37,6 +37,8 @@ export async function createProduct(_prevSate: any, formData: FormData) {
     const { slug, ...restErrors } = validatedFields.error.flatten().fieldErrors;
     return { errors: restErrors };
   }
+  // file upload MIME type
+  const mimeType = validatedFields.data.file.type;
   // upload file to S3
   const uploadCommand = new PutObjectCommand({
     Bucket: Resource.NamespaceDocs.name,
@@ -55,11 +57,11 @@ export async function createProduct(_prevSate: any, formData: FormData) {
     // create product in db
     // get the bucket/object-key as url reference
     const newDocURL = url.split('?')[0];
-    console.log({ newDocURL });
     const { file, ...stringProps } = validatedFields.data;
     const newProduct = await prisma.product.create({
       data: {
         ...stringProps,
+        mimeType,
         docsFolderUrl: newDocURL
       }
     });

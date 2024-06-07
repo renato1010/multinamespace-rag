@@ -12,6 +12,7 @@ import { createProduct } from '@/lib/actions/product';
 import { SubmitButton } from './submit-button';
 import { cn } from '@/lib/utils';
 import { CopyToClipboard } from './copy-to-clipboard-btn';
+import { Button } from './ui/button';
 
 const initialState = {
   errors: {}
@@ -20,10 +21,10 @@ export function UploadDocFileForm() {
   const [uploadState, uploadFormAction] = useFormState(createProduct, initialState);
 
   return (
-    <div className="mx-auto max-w-md space-y-6 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="space-y-2">
+    <div className="mx-auto max-w-md space-y-6 py-12 px-4 sm:px-6 lg:px-8 border-2 border-slate-300">
+      <div className="flex flex-col items-center space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Create Product</h2>
-        <p className="text-gray-500 dark:text-gray-400">Upload your product data</p>
+        <p className="text-gray-500 dark:text-gray-400">Upload product data</p>
         <p
           className={cn(
             'text-red-400 dark:text-pink-700 h-12',
@@ -70,7 +71,10 @@ export function UploadDocFileForm() {
             required
           />
         </div>
-        <SubmitButton />
+        <div className="flex justify-around">
+          <SubmitButton />
+          <Button type="reset">Reset</Button>
+        </div>
       </form>
     </div>
   );

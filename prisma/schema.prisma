@@ -20,5 +20,6 @@ model Product {
   name          String
   description   String
   docsFolderUrl String
+  mimeType      String
   createdAt     DateTime @default(now())
 }
