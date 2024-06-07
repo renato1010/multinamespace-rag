@@ -9,9 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "mongodb"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "mongodb"
+  url      = env("DIRECT_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 model Product {
@@ -19,6 +19,6 @@ model Product {
   slug          String   @unique
   name          String
   description   String
-  docsfolderurl String
+  docsFolderUrl String
   createdAt     DateTime @default(now())
 }
