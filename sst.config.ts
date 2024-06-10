@@ -9,11 +9,13 @@ export default $config({
     };
   },
   async run() {
+    const openAIApiSecret = new sst.Secret('OpenAIApiSecret');
+    const pineconeApiSecret = new sst.Secret('PineconeApiSecret');
     const namespaceBucket = new sst.aws.Bucket('NamespaceDocs', {
       public: true
     });
     new sst.aws.Nextjs('MultiNamespaceRag', {
-      link: [namespaceBucket]
+      link: [namespaceBucket, openAIApiSecret, pineconeApiSecret]
     });
   }
 });

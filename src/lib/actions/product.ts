@@ -1,11 +1,13 @@
 'use server';
-import prisma from '@/lib/db';
 import { Resource } from 'sst';
+import prisma from '@/lib/db';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import slugify from 'slugify';
 import { z } from 'zod';
 import { putObjectToPresignedUrl } from '../s3-bucket-utils';
+import { embedDocFile } from '../pinecone-utils';
+import { clearTempFolder, saveFileToTempFolder } from '../fs-utils';
 
 const slugRegex = /^[a-zA-Z0-9-]+$/;
 const nameRegex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
@@ -30,15 +32,19 @@ const createProductSchema = z.object({
 export async function createProduct(_prevSate: any, formData: FormData) {
   const formDataObj = Object.fromEntries(formData.entries());
   // slugify product name
-  const slug = slugify(formDataObj['name'] as string);
-  const validatedFields = createProductSchema.safeParse({ ...formDataObj, slug });
+  const slugified = slugify(formDataObj['name'] as string);
+  // parse schema
+  const validatedFields = createProductSchema.safeParse({ ...formDataObj, slug: slugified });
   if (!validatedFields.success) {
     // no need to return slug error
     const { slug, ...restErrors } = validatedFields.error.flatten().fieldErrors;
     return { errors: restErrors };
   }
-  // file upload MIME type
+  // MIME type(file upload)
   const mimeType = validatedFields.data.file.type;
+  // save file to local fs
+  const localFilePath = await saveFileToTempFolder(validatedFields.data.file);
+
   // upload file to S3
   const uploadCommand = new PutObjectCommand({
     Bucket: Resource.NamespaceDocs.name,
@@ -56,21 +62,32 @@ export async function createProduct(_prevSate: any, formData: FormData) {
     if (!ok) return { errors: { file: 'Error uploading file' } };
     // create product in db
     // get the bucket/object-key as url reference
-    const newDocURL = url.split('?')[0];
+    const docsFolderUrl = url.split('?')[0];
     const { file, ...stringProps } = validatedFields.data;
-    const newProduct = await prisma.product.create({
+    const {
+      name,
+      slug,
+      docsFolderUrl: uploadedDocUrl
+    } = await prisma.product.create({
       data: {
         ...stringProps,
         mimeType,
-        docsFolderUrl: newDocURL
+        docsFolderUrl
       }
     });
+    // embed the doc file in pinecone
+    const { ok: embeddingWentOK } = await embedDocFile(localFilePath, slug);
+    if (!embeddingWentOK) return { errors: { file: 'Error embedding document file' } };
+
     return {
-      message: `product: ${newProduct.name} was created successfully`,
-      newDocURL
+      message: `product: ${name} was created successfully`,
+      uploadedDocUrl
     };
   } catch (error) {
     console.error(error);
     return { errors: { file: 'Error processing file' } };
+  } finally {
+    // remove file from local fs
+    await clearTempFolder();
   }
 }

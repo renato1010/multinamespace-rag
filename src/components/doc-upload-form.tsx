@@ -36,11 +36,11 @@ export function UploadDocFileForm() {
         <p
           className={cn(
             'text-black text-xs h-12',
-            uploadState?.newDocURL ? 'visible' : 'invisible'
+            uploadState?.uploadedDocUrl ? 'visible' : 'invisible'
           )}
         >
-          New doc url: {uploadState?.newDocURL}
-          <CopyToClipboard text={uploadState?.newDocURL ?? ''} />
+          New doc url: {uploadState?.uploadedDocUrl}
+          <CopyToClipboard text={uploadState?.uploadedDocUrl ?? ''} />
         </p>
       </div>
       <form action={uploadFormAction} className="space-y-4">

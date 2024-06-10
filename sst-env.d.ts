@@ -11,6 +11,14 @@ declare module "sst" {
       name: string
       type: "sst.aws.Bucket"
     }
+    OpenAIApiSecret: {
+      type: "sst.sst.Secret"
+      value: string
+    }
+    PineconeApiSecret: {
+      type: "sst.sst.Secret"
+      value: string
+    }
   }
 }
 export {}
