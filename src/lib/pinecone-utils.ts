@@ -17,7 +17,6 @@ export async function pineconeIndexDocs(
   indexName = pineconeIndexName,
   namespace: string
 ) {
-  console.log('Retrieving Pinecone index...');
   try {
     // 1. Retrieve Pinecone index w namespace
     const pineconeIndex = client.Index(indexName).namespace(namespace);
@@ -30,7 +29,6 @@ export async function pineconeIndexDocs(
     });
     // 4. get splitted docs
     const splittedDocs = await textSplitter.splitDocuments(docs);
-    console.log('splitted1: ', splittedDocs[0].metadata);
     // 5. embed docs and store in pinecone
     await PineconeStore.fromDocuments(splittedDocs, openAIEmbeddings(), {
       pineconeIndex,
@@ -45,7 +43,6 @@ export async function pineconeIndexDocs(
 export async function embedDocFile(localPath: string, namespace: string) {
   try {
     const documents = await getDocsFromFile(localPath);
-    console.log('document1', documents[0].metadata);
     await pineconeIndexDocs(documents, pineconeClient, pineconeIndexName, namespace);
     return {
       ok: true
