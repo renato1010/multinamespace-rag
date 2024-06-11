@@ -26,7 +26,7 @@ export function CopyToClipboard({ text }: { text: string }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="outline" onClick={handleCopy(text)}>
-            Copy doc URL to Clipboard &nbsp;
+            Copy URL to Clipboard &nbsp;
             {copiedText ? (
               <CircleCheckIcon className="w-4 h-4 fill-green-500" />
             ) : (

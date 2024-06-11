@@ -15,11 +15,13 @@ datasource db {
 }
 
 model Product {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug          String   @unique
-  name          String
-  description   String
-  docsFolderUrl String
-  mimeType      String
-  createdAt     DateTime @default(now())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String   @unique
+  name        String
+  description String
+  docUrl      String
+  imgUrl      String
+  docMimeType String
+  imgMimeType String
+  createdAt   DateTime @default(now())
 }

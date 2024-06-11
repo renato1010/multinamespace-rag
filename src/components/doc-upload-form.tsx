@@ -4,14 +4,14 @@
  * @see https://v0.dev/t/mxB6jSLk18k
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { useFormState } from 'react-dom';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { createProduct } from '@/lib/actions/product';
-import { SubmitButton } from './submit-button';
 import { cn } from '@/lib/utils';
+import { useFormState } from 'react-dom';
 import { CopyToClipboard } from './copy-to-clipboard-btn';
+import { SubmitButton } from './submit-button';
 import { Button } from './ui/button';
 
 const initialState = {
@@ -25,23 +25,30 @@ export function UploadDocFileForm() {
       <div className="flex flex-col items-center space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Create Product</h2>
         <p className="text-gray-500 dark:text-gray-400">Upload product data</p>
-        <p
+        <div
           className={cn(
             'text-red-400 dark:text-pink-700 h-12',
-            uploadState?.errors ? 'visible' : 'invisible'
+            uploadState?.errors ? 'block' : 'hidden'
           )}
         >
           {Object.values(uploadState?.errors ?? {}).join(' | ')}
-        </p>
-        <p
+        </div>
+        <div
           className={cn(
-            'text-black text-xs h-12',
-            uploadState?.uploadedDocUrl ? 'visible' : 'invisible'
+            'text-black text-xs h-24 w-full',
+            uploadState?.documentUrl && uploadState?.imageUrl ? 'block' : 'hidden'
           )}
         >
-          New doc url: {uploadState?.uploadedDocUrl}
-          <CopyToClipboard text={uploadState?.uploadedDocUrl ?? ''} />
-        </p>
+          <p className="truncate">
+            New doc url: {uploadState?.documentUrl}
+          </p>
+          <CopyToClipboard text={uploadState?.documentUrl ?? ''} />
+          <br />
+          <p className="truncate">
+            New img url: {uploadState?.imageUrl}
+          </p>
+          <CopyToClipboard text={uploadState?.imageUrl ?? ''} />
+        </div>
       </div>
       <form action={uploadFormAction} className="space-y-4">
         <div className="space-y-1">
@@ -61,13 +68,24 @@ export function UploadDocFileForm() {
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="file">File</Label>
+          <Label htmlFor="docFile">Document File</Label>
           <Input
-            id="file"
-            name="file"
+            id="docFile"
+            name="docFile"
             type="file"
             placeholder="add .txt or .pdf file"
             accept=".txt, .pdf"
+            required
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="imgFile">Image File</Label>
+          <Input
+            id="imgFile"
+            name="imgFile"
+            type="file"
+            placeholder="add .png or .jpg file"
+            accept=".png,.jpg,.jpeg"
             required
           />
         </div>
