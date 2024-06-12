@@ -1,5 +1,7 @@
 'use server';
 import prisma from '@/lib/db';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import slugify from 'slugify';
 import { clearTempFolder, saveFileToTempFolder } from '../fs-utils';
 import { embedDocFile } from '../pinecone-utils';
@@ -9,7 +11,7 @@ import { createProductSchema } from '../schema-validation-utils';
 export async function createProduct(_prevSate: any, formData: FormData) {
   const formDataObj = Object.fromEntries(formData.entries());
   // slugify product name
-  const slugified = slugify(formDataObj['name'] as string);
+  const slugified = slugify(formDataObj['name'] as string).toLowerCase();
   // parse schema
   const validatedFields = createProductSchema.safeParse({ ...formDataObj, slug: slugified });
   if (!validatedFields.success) {
@@ -50,7 +52,6 @@ export async function createProduct(_prevSate: any, formData: FormData) {
     // embed the doc file in pinecone
     const { ok: embeddingWentOK } = await embedDocFile(localFilePath, slug);
     if (!embeddingWentOK) return { errors: { file: 'Error embedding document file' } };
-
     return {
       message: `product: ${name} was created successfully`,
       documentUrl,
@@ -63,4 +64,6 @@ export async function createProduct(_prevSate: any, formData: FormData) {
     // remove file from local fs
     await clearTempFolder();
   }
+  revalidatePath('/products');
+  redirect('/products');
 }

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const slugRegex = /^[a-zA-Z0-9-]+$/;
-const nameRegex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
+const nameRegex = /^[a-zA-Z0-9]+([ -][a-zA-Z0-9]+)*$/;
 
 const slugValidator = (slug: string) => slugRegex.test(slug);
 const nameValidator = (name: string) => nameRegex.test(name.trim());

@@ -19,7 +19,7 @@ export async function pineconeIndexDocs(
 ) {
   try {
     // 1. Retrieve Pinecone index w namespace
-    const pineconeIndex = client.Index(indexName).namespace(namespace);
+    const pineconeIndex = client.Index(indexName);
     // 2. Log the retrieved index name
     console.log(`Pinecone index ${indexName}; namespace ${namespace}`);
     // 3. Create RecursiveCharacterTextSplitter instance
@@ -32,7 +32,7 @@ export async function pineconeIndexDocs(
     // 5. embed docs and store in pinecone
     await PineconeStore.fromDocuments(splittedDocs, openAIEmbeddings(), {
       pineconeIndex,
-      maxConcurrency: 5
+      namespace
     });
   } catch (error) {
     console.error(error);
