@@ -33,6 +33,7 @@
     "pdfjs-dist": "^4.3.136",
     "react": "^18",
     "react-dom": "^18",
+    "react-intersection-observer": "^9.10.3",
     "react-syntax-highlighter": "^15.5.0",
     "slugify": "^1.6.6",
     "sst": "ion",
