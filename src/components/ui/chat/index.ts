@@ -1,16 +1,15 @@
-import { JSONValue } from "ai";
-import ChatInput from "./chat-input";
-import ChatMessages from "./chat-messages";
+import { JSONValue } from 'ai';
+import ChatInput from './chat-input';
 
-export { type ChatHandler } from "./chat.interface";
-export { ChatInput, ChatMessages };
+export { type ChatHandler } from './chat.interface';
+export { ChatInput };
 
 export enum MessageAnnotationType {
-  CSV = "csv",
-  IMAGE = "image",
-  SOURCES = "sources",
-  EVENTS = "events",
-  TOOLS = "tools",
+  CSV = 'csv',
+  IMAGE = 'image',
+  SOURCES = 'sources',
+  EVENTS = 'events',
+  TOOLS = 'tools'
 }
 
 export type ImageData = {
@@ -59,12 +58,7 @@ export type ToolData = {
   };
 };
 
-export type AnnotationData =
-  | ImageData
-  | CsvData
-  | SourceData
-  | EventData
-  | ToolData;
+export type AnnotationData = ImageData | CsvData | SourceData | EventData | ToolData;
 
 export type MessageAnnotation = {
   type: MessageAnnotationType;
@@ -73,7 +67,7 @@ export type MessageAnnotation = {
 
 export function getAnnotationData<T extends AnnotationData>(
   annotations: MessageAnnotation[],
-  type: MessageAnnotationType,
+  type: MessageAnnotationType
 ): T[] {
   return annotations.filter((a) => a.type === type).map((a) => a.data as T);
 }

@@ -20,10 +20,10 @@ export default async function ProductChatPage({ params: { slug } }: { params: { 
 
   return (
     <main className="h-full w-full flex justify-center items-center background-gradient">
-      <div className="space-y-2 lg:space-y-10 w-[90%] lg:w-[60rem]">
+      <div className="space-y-2 lg:space-y-5 w-[90%] lg:w-[60rem]">
         <Header slug={slug} />
         <div className="h-[65vh] flex">
-          <ChatSection />
+          <ChatSection slug={slug} />
         </div>
       </div>
     </main>

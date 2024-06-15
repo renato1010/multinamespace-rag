@@ -13,8 +13,6 @@ export default function ChatInput(
     | 'handleSubmit'
     | 'handleInputChange'
     | 'messages'
-    | 'setInput'
-    | 'append'
   >
 ) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
