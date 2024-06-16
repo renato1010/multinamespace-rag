@@ -9,7 +9,10 @@ export default async function Header({ slug }: { slug: string }) {
 
   return (
     <div className="z-10 flex flex-col max-w-5xl w-full items-center justify-start font-mono text-sm">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-950 border border-slate-200 flex flex-col justify-start items-center">
+      <div
+        className="bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-950 border
+       border-slate-200 flex flex-col justify-start items-center p-3"
+      >
         <Image
           src={imgUrl}
           alt={`product image for ${name}`}
