@@ -40,14 +40,18 @@ async function askDocs(prompt: string, pineconeClient: Pinecone = pcClient, name
   });
   const vectorStoreRetriever = vectorStore.asRetriever();
   const retrieverDocs = await vectorStoreRetriever.invoke(prompt);
-  const chatPromptTemplate =
-    PromptTemplate.fromTemplate(`Answer the question based only on the following context:
-  {context}
-  Question: {question}`);
+  const chatPromptTemplate = PromptTemplate.fromTemplate(`
+As a sales expert, respond to the question based solely on the following context. 
+Highlight the benefits and advantages of the referenced item. 
+In case the provided documentation lacks sufficient information 
+to respond the question politely invite user to reach customer support.
+{documentation}
+Question: {question}
+  `);
   const outputParser = new StringOutputParser();
   const ragChain = chatPromptTemplate.pipe(openAIChatModel).pipe(outputParser);
   const stream = await ragChain.stream({
-    context: formatDocumentsAsString(retrieverDocs),
+    documentation: formatDocumentsAsString(retrieverDocs),
     question: prompt
   });
   return stream;
