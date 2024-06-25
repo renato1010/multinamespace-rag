@@ -22,7 +22,7 @@ export function ChatSection({ slug }: { slug: string }) {
     if (!scrollAreaRef.current) return;
 
     const { scrollTop, scrollHeight, clientHeight } = scrollAreaRef.current;
-    const atBottom = scrollHeight - clientHeight <= scrollTop + 1;
+    const atBottom = scrollHeight - clientHeight <= scrollTop + 8;
 
     setIsAtBottom(atBottom);
   };
