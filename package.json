@@ -36,7 +36,7 @@
     "react-intersection-observer": "^9.10.3",
     "react-syntax-highlighter": "^15.5.0",
     "slugify": "^1.6.6",
-    "sst": "ion",
+    "sst": "^0.1.78",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",

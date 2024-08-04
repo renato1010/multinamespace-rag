@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [{
       protocol: 'https',
-      hostname: 'multinamespace-rag-renato-namespacedocs-bozznstd.s3.us-east-2.amazonaws.com'
+      hostname: 'multinamespace-rag-dev-namespacedocs-tnosbrms.s3.us-east-2.amazonaws.com'
     }]
   }
 };
