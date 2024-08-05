@@ -8,6 +8,11 @@ import { Product } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Products',
+  description: 'Products page'
+};
+
 export default async function ProductListPage() {
   const products = await prisma.product.findMany({
     select: { id: true, name: true, description: true, imgUrl: true, slug: true }

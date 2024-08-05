@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "sst dev next dev",
+    "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
   },
@@ -43,6 +43,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.45.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
