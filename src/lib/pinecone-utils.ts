@@ -53,3 +53,14 @@ export async function embedDocFile(localPath: string, namespace: string) {
     };
   }
 }
+
+export async function deleteByNamespace(namespace: string) {
+  const client = pineconeClient;
+  const index = client.Index(pineconeIndexName);
+  try {
+    await index.namespace(namespace).deleteAll();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error deleting namespace');
+  }
+}

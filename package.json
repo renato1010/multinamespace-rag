@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "e2e": "playwright test --project chromium"
   },
   "dependencies": {
     "@ai-sdk/react": "^0.0.1",
