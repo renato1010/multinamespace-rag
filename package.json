@@ -7,11 +7,12 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "e2e": "playwright test --project chromium"
+    "e2e:dev": "playwright test --project chromium"
   },
   "dependencies": {
     "@ai-sdk/react": "^0.0.1",
     "@aws-sdk/client-s3": "^3.591.0",
+    "@aws-sdk/client-secrets-manager": "^3.624.0",
     "@aws-sdk/s3-request-presigner": "^3.591.0",
     "@langchain/community": "^0.2.9",
     "@langchain/core": "^0.2.6",

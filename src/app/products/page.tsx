@@ -49,8 +49,12 @@ function ProductCard({
         priority
       />
       <div className="p-4 text-center">
-        <h3 className="text-lg font-semibold mb-2">{name}</h3>
-        <p className="text-gray-500 dark:text-gray-400 mb-2">{description}</p>
+        <h3 className="text-lg font-semibold mb-2">
+          {name}
+        </h3>
+        <p className="text-gray-500 dark:text-gray-400 mb-2">
+          {description}
+        </p>
         <div className="flex flex-col gap-y-4 justify-between items-center">
           <div className="text-sm md:text-[11px] text-primary font-semibold bg-slate-200">
             <code className="font-mono font-bold">Namespace: {slug}</code>

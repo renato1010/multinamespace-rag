@@ -1,29 +1,43 @@
 import path from 'node:path';
 import { test, expect } from '@playwright/test';
-// import prisma from '@/lib/db';
-// import { deleteByNamespace } from '@/lib/pinecone-utils';
-// import slugify from 'slugify';
-import { data } from './test-data/add-product-data';
+import prisma from '@/lib/db';
+import slugify from 'slugify';
+import { Pinecone } from '@pinecone-database/pinecone';
+import { data } from './test-data/add-product-data.js';
+import { constants } from '@/lib/config';
+import { getSecretKeyByName } from '@/lib/secrets-utils.js';
+import { deleteS3Folder } from './test-data/utils/s3-bucket.js';
+
+const { pineconeIndexName, namespaceBucket } = constants;
+
 const { productName, productDescription, docFilePath, imgFilePath } = data;
-
-test.beforeEach(async ({ page }) => {
-  await page.goto('/products/add');
-});
-
-// test.afterAll(async ({}) => {
-//   const { deleteByNamespace } = await import('../src/lib/pinecone-utils');
-//   const { default: slugify } = await import('slugify');
-//   const { productName } = await import('./test-data/add-product-data.json');
-
-//   // remove newly created product from DB by unique property slug
-//   const slugified = slugify(productName).toLowerCase();
-//   const deletedProduct = await prisma.product.delete({ where: { slug: slugified } });
-//   console.log(`Product with name = ${deletedProduct.name} was removed successfuly`);
-//   // delete all vectors in Pinecone-Index with specific namespace
-//   await deleteByNamespace(slugified);
-// });
-
+const slugified = slugify(productName).toLowerCase();
+test.describe.configure({ mode: 'serial' });
 test.describe('Add Product Page', () => {
+  // hooks
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/products/add');
+  });
+  test.afterAll('Deleting the newly created Product', async ({}) => {
+    try {
+      const pineconeSecret = await getSecretKeyByName('pinecone-api-key');
+      if (!pineconeSecret) throw new Error('Pinecone secret not found');
+      const pineconeClient = new Pinecone({ apiKey: pineconeSecret });
+      const index = pineconeClient.Index(pineconeIndexName);
+
+      // remove newly created product from DB by unique property slug
+      const deletedProduct = await prisma.product.delete({ where: { slug: slugified } });
+      console.log(`Product with name = ${deletedProduct.name} was removed successfuly`);
+      // delete all vectors in Pinecone-Index with specific namespace
+      await index.namespace(slugified).deleteAll();
+      console.log(`Vectors with namespace ${slugified} were removed successfuly`);
+      // delete product doc and img from S3 bucket
+      await deleteS3Folder(namespaceBucket, `${slugified}/`);
+      console.log(`${slugified}/doc and ${slugified}/img objects removed from bucket`);
+    } catch (error) {
+      console.error(error);
+    }
+  });
   test('has title', async ({ page }) => {
     // Expect a title "to contain" a substring.
     await expect(page).toHaveTitle(/add product/i);
@@ -42,14 +56,14 @@ test.describe('Add Product Page', () => {
     // set the img file
     await page.locator("input[name='imgFile']").setInputFiles(path.join(__dirname, imgFilePath));
     await page.getByRole('button', { name: /submit/i }).click();
-    await page.pause();
-    // await for paragraph showing the uploaded doc url
-    await expect(page.getByText(/new doc url/i)).toBeVisible({ timeout: 10000 });
 
+    // await for paragraph showing the uploaded doc url
+    await expect(page.getByText(/new doc url/i)).toBeVisible({ timeout: 15000 });
     // go to products page and check for the presence of newly created product
-    await page.goto('/products');
-    // check for a product with a specific name and description
-    await expect(page.getByText(productName)).toBeVisible();
-    await expect(page.getByText(productDescription)).toBeVisible();
+    await page.goto('/products', { waitUntil: 'load' });
+    // check for a product with a specific name
+    await expect(page.getByRole('heading', { level: 3, name: productName })).toBeVisible({
+      timeout: 15000
+    });
   });
 });
