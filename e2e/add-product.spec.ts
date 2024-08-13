@@ -6,7 +6,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { data } from './test-data/add-product-data.js';
 import { constants } from '@/lib/config';
 import { getSecretKeyByName } from '@/lib/secrets-utils.js';
-import { deleteS3Folder } from './test-data/utils/s3-bucket.js';
+import { deleteS3FolderAndContents } from './test-data/utils/s3-bucket.js';
 
 const { pineconeIndexName, namespaceBucket } = constants;
 
@@ -32,7 +32,7 @@ test.describe('Add Product Page', () => {
       await index.namespace(slugified).deleteAll();
       console.log(`Vectors with namespace ${slugified} were removed successfuly`);
       // delete product doc and img from S3 bucket
-      await deleteS3Folder(namespaceBucket, `${slugified}/`);
+      await deleteS3FolderAndContents(namespaceBucket, `${slugified}/`);
       console.log(`${slugified}/doc and ${slugified}/img objects removed from bucket`);
     } catch (error) {
       console.error(error);
