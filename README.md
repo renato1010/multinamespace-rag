@@ -1,5 +1,7 @@
 ## Project Bootrap
 
+[Spanish](./README.ES.md)
+
 [project set up](./project-bootstrap.md)
 
 ## Multitenant RAG
@@ -29,7 +31,7 @@ Client Component(Upload form)
   - Slugifying name
   - Upload doc and img to s3(presigned url)
   - Create product in DB schema(Prisma)
-  - Embed doc File
+  - Vector Embedding of the doc File
 
 **Embed Doc File**  
 [`src/lib/pinecone-utils.ts`](src/lib/pinecone-utils.ts)
