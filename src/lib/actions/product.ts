@@ -64,6 +64,6 @@ export async function createProduct(_prevSate: any, formData: FormData) {
     // remove file from local fs
     await clearTempFolder();
   }
-  revalidatePath('/products');
-  redirect('/products');
+  // revalidatePath('/products');
+  // redirect('/products');
 }
