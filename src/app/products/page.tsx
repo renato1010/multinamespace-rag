@@ -48,11 +48,11 @@ function ProductCard({
         className="w-full h-60 object-scale-down object-center"
         priority
       />
-      <div className="p-4 text-center">
+      <div className="h-[350px] flex flex-col p-4 text-center">
         <h3 className="text-lg font-semibold mb-2">
           {name}
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 mb-2">
+        <p className="flex-1 text-gray-500 dark:text-gray-400 mb-2 overflow-hidden">
           {description}
         </p>
         <div className="flex flex-col gap-y-4 justify-between items-center">
