@@ -10,6 +10,6 @@ export const getProduct = unstable_cache(
       where: { slug },
       select
     }),
-  ['product-select']
+  undefined,
+  { tags: ['product'], revalidate: 60 * 60 }
 );
-

@@ -35,6 +35,7 @@ export async function putDocAndImgtoPresignedUrl(slug: string, docFile: File, im
     ]);
     return { docOK, docUrl: getSplittedUrl(docUrl), imgOK, imgUrl: getSplittedUrl(imgUrl) };
   } catch (error) {
+    console.error(error);
     return { docOK: false, docUrl: '', imgOK: false, imgUrl: '' };
   }
 }

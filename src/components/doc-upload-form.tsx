@@ -4,15 +4,16 @@
  * @see https://v0.dev/t/mxB6jSLk18k
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
+import { useFormState } from 'react-dom';
+import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { createProduct } from '@/lib/actions/product';
 import { cn } from '@/lib/utils';
-import { useFormState } from 'react-dom';
 import { CopyToClipboard } from './copy-to-clipboard-btn';
 import { SubmitButton } from './submit-button';
-import { Button } from './ui/button';
+import { Button, buttonVariants } from './ui/button';
 
 const initialState = {
   errors: {}
@@ -39,18 +40,14 @@ export function UploadDocFileForm() {
             uploadState?.documentUrl && uploadState?.imageUrl ? 'block' : 'hidden'
           )}
         >
-          <p className="truncate">
-            New doc url: {uploadState?.documentUrl}
-          </p>
+          <p className="truncate">New doc url: {uploadState?.documentUrl}</p>
           <CopyToClipboard text={uploadState?.documentUrl ?? ''} />
           <br />
-          <p className="truncate">
-            New img url: {uploadState?.imageUrl}
-          </p>
+          <p className="truncate">New img url: {uploadState?.imageUrl}</p>
           <CopyToClipboard text={uploadState?.imageUrl ?? ''} />
         </div>
       </div>
-      <form action={uploadFormAction} className="space-y-4">
+      <form action={uploadFormAction} className="flex flex-col items-stretch space-y-4">
         <div className="space-y-1">
           <Label htmlFor="name">Product Name</Label>
           <Input id="name" name="name" type="text" placeholder="awesome product" required />
@@ -89,10 +86,13 @@ export function UploadDocFileForm() {
             required
           />
         </div>
-        <div className="flex justify-around">
+        <div className="w-full flex justify-around">
           <SubmitButton />
           <Button type="reset">Reset</Button>
         </div>
+        <Link className={cn(buttonVariants({ variant: 'link' }))} href="/products">
+          Back to products
+        </Link>
       </form>
     </div>
   );

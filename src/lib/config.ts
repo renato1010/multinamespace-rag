@@ -3,5 +3,5 @@ export const constants = {
   embeddingModel: 'text-embedding-3-large',
   embeddingModelVectorLength: 3072,
   tempFoldeName: 'tmp',
-  namespaceBucket: 'multinamespace-rag-dev-namespacedocs-tnosbrms'
+  namespaceBucket: 'multinamespace-rag-dev-namespacedocs-caexmxho'
 };

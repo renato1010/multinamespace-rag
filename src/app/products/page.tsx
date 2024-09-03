@@ -7,6 +7,9 @@ import prisma from '@/lib/db';
 import { Product } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Plus } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export const metadata = {
   title: 'Products',
@@ -19,9 +22,12 @@ export default async function ProductListPage() {
   });
 
   return (
-    <section className="h-screen w-screen flex flex-col justify-start items-center">
+    <section className="h-screen max-w-5xl mx-auto p-8 flex flex-col justify-start items-center">
       <h2 className="text-2xl font-bold my-8">Products</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 md:px-6 py-8">
+      <Link className={cn(buttonVariants({ variant: 'link' }),'self-end')} href="/products/add">
+        <Plus className="size-10 border-2 border-slate-400 rounded-full" />
+      </Link>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 px-4 md:px-6 py-8">
         {products.map(ProductCard)}
       </div>
     </section>
@@ -48,10 +54,8 @@ function ProductCard({
         className="w-full h-60 object-scale-down object-center"
         priority
       />
-      <div className="h-[350px] flex flex-col p-4 text-center">
-        <h3 className="text-lg font-semibold mb-2">
-          {name}
-        </h3>
+      <div className="h-[320px] flex flex-col p-4 text-center">
+        <h3 className="h-14 text-md capitalize font-semibold mb-2">{name}</h3>
         <p className="flex-1 text-gray-500 dark:text-gray-400 mb-2 overflow-hidden">
           {description}
         </p>
